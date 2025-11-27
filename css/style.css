@@ -334,3 +334,33 @@ a:hover {
   color: #fff;
   border-color: #24292e;
 }
+
+/* Footer: iconos grises y hover blanco */
+#footer .social-links a i,
+#footer .social-links a svg,
+#footer .social-links a img {
+  color: #bfbfbf !important; /* para icon-font (bootstrap-icons) */
+  filter: grayscale(100%); /* para imágenes/SVG externas */
+  opacity: 0.95;
+  transition: color 0.18s ease, filter 0.18s ease, opacity 0.18s ease;
+}
+
+#footer .social-links a:hover i,
+#footer .social-links a:focus i,
+#footer .social-links a:hover img,
+#footer .social-links a:focus img,
+#footer .social-links a:hover svg,
+#footer .social-links a:focus svg {
+  color: #ffffff !important;
+  filter: none;
+  opacity: 1;
+}
+
+/* Si usas icons con 'currentColor' (SVG inline), forzar color del link */
+#footer .social-links a {
+  color: #bfbfbf; /* estado normal */
+}
+#footer .social-links a:hover,
+#footer .social-links a:focus {
+  color: #ffffff;
+}
