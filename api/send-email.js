@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 // Configuración de rate limiting simple (en memoria)
 const rateLimit = new Map();
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   // Headers CORS
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,6 +14,16 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
+  }
+
+  // Endpoint de salud para GET
+  if (req.method === 'GET') {
+    return res.status(200).json({
+      success: true,
+      message: 'API de contacto funcionando correctamente',
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || 'production'
+    });
   }
   // Solo permitir POST
   if (req.method !== 'POST') {
