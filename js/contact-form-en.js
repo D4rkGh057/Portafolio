@@ -9,12 +9,25 @@ document.addEventListener('DOMContentLoaded', function() {
   // Backend URL (automatically adjusts for local or production)
   const BACKEND_URL = window.location.origin;
 
+  console.log('🚀 Contact form initialized (EN) - Using backend:', BACKEND_URL + '/api/send-email');
+
   if (contactForm) {
+    // Prevent traditional form submission
     contactForm.addEventListener('submit', handleFormSubmit);
+    
+    // Backup: prevent any accidental submission
+    contactForm.setAttribute('onsubmit', 'return false;');
+    
+    console.log('✅ Form event listeners attached (EN)');
+  } else {
+    console.error('❌ Contact form not found! (EN)');
   }
 
   async function handleFormSubmit(e) {
     e.preventDefault();
+    e.stopPropagation();
+    
+    console.log('📧 Form submitted (EN) - preventing default behavior');
 
     // Get form data
     const formData = new FormData(contactForm);
@@ -35,6 +48,9 @@ document.addEventListener('DOMContentLoaded', function() {
     hideMessage();
 
     try {
+      console.log('📤 Sending to (EN):', `${BACKEND_URL}/api/send-email`);
+      console.log('📊 Data (EN):', data);
+      
       // Send data to backend
       const response = await fetch(`${BACKEND_URL}/api/send-email`, {
         method: 'POST',

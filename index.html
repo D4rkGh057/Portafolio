@@ -883,7 +883,7 @@
           <p class="mb-0" style="color:#222;">Estoy aquí para ayudarte, no dudes en dejarme un mensaje.</p>
         </div>
         <div class="col-lg-6 px-5" data-aos="fade-left">
-          <form id="contactForm" class="w-100" data-aos="fade-left">
+          <form id="contactForm" class="w-100" data-aos="fade-left" onsubmit="return false;">
             <label for="nombre" class="visually-hidden">Nombre</label>
             <input type="text" id="nombre" name="nombre" class="form-control mb-3" placeholder="tu nombre" style="height:50px;" required>
             <label for="email" class="visually-hidden">Correo electrónico</label>
@@ -969,6 +969,7 @@
   </footer>
 
   <!-- Bootstrap JavaScript Libraries -->
+  <script src="js/anti-formbricks.js"></script> <!-- Protection against accidental form submissions -->
   <script defer src="js/jquery-1.11.0.min.js"></script> <!-- jquery file-->
 
   <script defer src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
