@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
 // Configuración de rate limiting simple (en memoria)
 const rateLimit = new Map();
@@ -171,10 +171,29 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error('Error sending email:', error);
     
+    // Errores más específicos para debugging
+    let errorMessage = 'Error interno del servidor';
+    
+    if (error.code === 'EAUTH') {
+      errorMessage = 'Error de autenticación de email. Verifica las credenciales.';
+    } else if (error.code === 'ENOTFOUND') {
+      errorMessage = 'Error de conexión. Verifica la configuración del servidor.';
+    } else if (error.message?.includes('Invalid login')) {
+      errorMessage = 'Credenciales de email inválidas.';
+    } else if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      errorMessage = 'Variables de entorno de email no configuradas.';
+    }
+    
     res.status(500).json({
       success: false,
-      error: 'Error interno del servidor',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      error: errorMessage,
+      code: error.code || 'UNKNOWN',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      envCheck: {
+        emailUser: !!process.env.EMAIL_USER,
+        emailPass: !!process.env.EMAIL_PASS,
+        emailTo: !!process.env.EMAIL_TO
+      }
     });
   }
 }

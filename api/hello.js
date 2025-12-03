@@ -14,6 +14,10 @@ export default async function handler(req, res) {
     method: req.method,
     url: req.url,
     timestamp: new Date().toISOString(),
-    vercel: true
+    vercel: true,
+    environment: process.env.NODE_ENV || 'production',
+    emailConfigured: !!(process.env.EMAIL_USER && process.env.EMAIL_PASS && process.env.EMAIL_TO),
+    emailUser: process.env.EMAIL_USER ? process.env.EMAIL_USER.substring(0, 8) + '***' : 'NOT_SET',
+    emailTo: process.env.EMAIL_TO ? process.env.EMAIL_TO.substring(0, 8) + '***' : 'NOT_SET'
   });
 }
