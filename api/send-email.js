@@ -4,6 +4,14 @@ import nodemailer from 'nodemailer';
 const rateLimit = new Map();
 
 export default async function handler(req, res) {
+  console.log('🚀 Function started - Method:', req.method);
+  console.log('📧 Environment check:', {
+    emailUser: !!process.env.EMAIL_USER,
+    emailPass: !!process.env.EMAIL_PASS,
+    emailTo: !!process.env.EMAIL_TO,
+    nodeEnv: process.env.NODE_ENV
+  });
+
   // Headers CORS
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -75,12 +83,33 @@ export default async function handler(req, res) {
       });
     }
 
+    // Verificar variables de entorno primero
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS || !process.env.EMAIL_TO) {
+      console.error('❌ Missing environment variables:', {
+        EMAIL_USER: !!process.env.EMAIL_USER,
+        EMAIL_PASS: !!process.env.EMAIL_PASS,
+        EMAIL_TO: !!process.env.EMAIL_TO
+      });
+      return res.status(500).json({
+        success: false,
+        error: 'Configuración de email incompleta',
+        missing: {
+          EMAIL_USER: !process.env.EMAIL_USER,
+          EMAIL_PASS: !process.env.EMAIL_PASS,
+          EMAIL_TO: !process.env.EMAIL_TO
+        }
+      });
+    }
+
+    console.log('📧 Configuring transporter for:', process.env.EMAIL_USER);
+
     // Configurar Nodemailer
     let transporter;
     
     // Gmail
     if (process.env.EMAIL_USER?.includes('gmail.com')) {
-      transporter = nodemailer.createTransporter({
+      console.log('🔧 Using Gmail configuration');
+      transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: process.env.EMAIL_USER,
@@ -114,7 +143,9 @@ export default async function handler(req, res) {
     }
 
     // Verificar configuración
+    console.log('🔍 Verifying transporter...');
     await transporter.verify();
+    console.log('✅ Transporter verified successfully');
 
     // Configurar email
     const mailOptions = {
@@ -160,7 +191,9 @@ export default async function handler(req, res) {
     };
 
     // Enviar email
+    console.log('📤 Sending email...');
     const info = await transporter.sendMail(mailOptions);
+    console.log('✅ Email sent successfully:', info.messageId);
 
     res.status(200).json({
       success: true,
