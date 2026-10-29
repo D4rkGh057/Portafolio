@@ -5,24 +5,8 @@ const rateLimit = new Map();
 
 export default async function handler(req, res) {
   console.log('🚀 Function started - Method:', req.method);
-  console.log('📧 Environment check:', {
-    emailUser: !!process.env.EMAIL_USER,
-    emailPass: !!process.env.EMAIL_PASS,
-    emailTo: !!process.env.EMAIL_TO,
-    nodeEnv: process.env.NODE_ENV
-  });
 
-  // Headers CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-
-  // Manejar OPTIONS request (preflight)
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
+  // El formulario usa el mismo origen, por lo que no se envían headers CORS.
 
   // Endpoint de salud para GET
   if (req.method === 'GET') {
@@ -92,16 +76,9 @@ export default async function handler(req, res) {
       });
       return res.status(500).json({
         success: false,
-        error: 'Configuración de email incompleta',
-        missing: {
-          EMAIL_USER: !process.env.EMAIL_USER,
-          EMAIL_PASS: !process.env.EMAIL_PASS,
-          EMAIL_TO: !process.env.EMAIL_TO
-        }
+        error: 'Configuración de email incompleta'
       });
     }
-
-    console.log('📧 Configuring transporter for:', process.env.EMAIL_USER);
 
     // Configurar Nodemailer
     let transporter;
@@ -221,12 +198,7 @@ export default async function handler(req, res) {
       success: false,
       error: errorMessage,
       code: error.code || 'UNKNOWN',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined,
-      envCheck: {
-        emailUser: !!process.env.EMAIL_USER,
-        emailPass: !!process.env.EMAIL_PASS,
-        emailTo: !!process.env.EMAIL_TO
-      }
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 }

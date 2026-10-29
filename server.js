@@ -110,7 +110,7 @@ app.post('/send-email', emailLimiter, async (req, res) => {
   try {
     const { nombre, email, mensaje } = req.body;
     
-    console.log('Intento de envío de email:', { nombre, email: email?.substring(0, 5) + '***' });
+    console.log('Intento de envío de email recibido');
     
     // Validar entrada
     const validationErrors = validateInput(nombre, email, mensaje);
