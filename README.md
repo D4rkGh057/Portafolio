@@ -34,12 +34,10 @@ Este es un portafolio web completo que incluye:
 │   │   └── style.css          # Estilos principales
 │   ├── js/
 │   │   ├── script.js          # Scripts principales
-│   │   ├── script-simple.js   # Scripts simplificados
 │   │   ├── contact-form.js    # Formulario ES
 │   │   ├── contact-form-en.js # Formulario EN
 │   │   ├── anti-formbricks.js # Protección de formularios
-│   │   ├── plugins.js         # Plugins adicionales
-│   │   └── scroll-animate.js  # Animaciones de scroll
+│   │   └── plugins.js         # Plugins adicionales
 │   └── images/                # Recursos gráficos
 │
 ├── 🔧 Backend

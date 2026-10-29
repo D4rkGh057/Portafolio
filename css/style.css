@@ -195,6 +195,11 @@ body[data-bs-theme="light"] {
   color: var(--bs-primary) !important;
 }
 
+/* Bootstrap already enables smooth scrolling; offset anchors for the fixed navbar */
+html {
+  scroll-padding-top: 80px;
+}
+
 body {
   font-family: var(--body-font);
 }
