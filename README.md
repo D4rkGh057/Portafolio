@@ -43,10 +43,8 @@ Este es un portafolio web completo que incluye:
 │   └── images/                # Recursos gráficos
 │
 ├── 🔧 Backend
-│   ├── server.js              # Servidor Express (desarrollo)
 │   ├── api/
-│   │   ├── send-email.js      # Serverless function (Vercel)
-│   │   └── test.js            # Función de prueba
+│   │   └── send-email.js      # Serverless function (Vercel)
 │   └── vercel.json            # Configuración Vercel
 │
 ├── ⚙️ Configuración
@@ -65,7 +63,7 @@ Este es un portafolio web completo que incluye:
 ### Prerrequisitos
 
 - **Node.js** 16 o superior
-- **npm** o **yarn**
+- **pnpm** (el proyecto usa `pnpm-lock.yaml`)
 - Cuenta de **Gmail** con App Password configurado
 - **Git** (opcional, para clonar el repo)
 
@@ -79,31 +77,20 @@ cd Portafolio
 ### 2. Instalar dependencias
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### 3. Configurar variables de entorno
 
-Copia el archivo de ejemplo y edítalo:
-
-```bash
-cp .env.example .env
-```
-
-Completa el archivo `.env` con tus datos:
+Crea un archivo `.env` en la raíz del proyecto (está excluido de Git):
 
 ```env
-# Configuración del servidor
-PORT=3000
 NODE_ENV=development
 
 # Configuración de Gmail
 EMAIL_USER=tu_email@gmail.com
 EMAIL_PASS=tu_app_password
 EMAIL_TO=tucorreo@outlook.com
-
-# CORS
-ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8080
 ```
 
 ### 4. Configurar App Password de Gmail
@@ -121,15 +108,7 @@ ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8080
 ```json
 {
   "dependencies": {
-    "express": "^4.18.2",           // Servidor web
-    "nodemailer": "^6.9.7",        // Envío de emails
-    "cors": "^2.8.5",              // Control de CORS
-    "dotenv": "^16.3.1",           // Variables de entorno
-    "helmet": "^7.1.0",            // Headers de seguridad
-    "express-rate-limit": "^7.1.5" // Rate limiting
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.2"            // Auto-restart en desarrollo
+    "nodemailer": "^6.9.7"         // Envío de emails
   }
 }
 ```
@@ -141,31 +120,20 @@ ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8080
 - **AOS 2.3.4** - Animaciones on scroll
 - **Swiper** - Carruseles y sliders
 - **Isotope** - Filtros y layouts
-- **Lightbox** - Galerías de imágenes
 - **jQuery 1.11.0** - Manipulación DOM (legacy)
 
 ## ⚡ Ejecución
 
 ### Desarrollo Local
 
-#### Opción A: Servidor Express (Tradicional)
+El backend es una función serverless (`api/send-email.js`), así que se ejecuta con Vercel CLI:
+
 ```bash
-# Desarrollo con auto-restart
-npm run dev
-
-# Producción
-npm start
-```
-
-Accede a: `http://localhost:3000`
-
-#### Opción B: Vercel CLI (Serverless)
-```bash
-# Instalar Vercel CLI
-npm install -g vercel
+# Instalar Vercel CLI (una sola vez)
+pnpm add -g vercel
 
 # Desarrollo local con serverless functions
-vercel dev
+pnpm dev
 ```
 
 Accede a: `http://localhost:3000`
@@ -200,18 +168,18 @@ Accede a: `http://localhost:3000`
 
 ### Test local del formulario
 
-1. **Inicia el servidor:**
+1. **Inicia el entorno local:**
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 2. **Prueba la API:**
    ```bash
    # Health check
-   curl http://localhost:3000/health
+   curl http://localhost:3000/api/send-email
    
    # Test de email
-   curl -X POST http://localhost:3000/send-email \
+   curl -X POST http://localhost:3000/api/send-email \
      -H "Content-Type: application/json" \
      -d '{
        "nombre": "Test User",
@@ -247,8 +215,6 @@ El sistema incluye logs detallados:
 - **Rate Limiting:** 5 emails por IP cada 15 minutos
 - **Validación de entrada:** Nombres, emails y mensajes
 - **Sanitización HTML:** Prevención XSS
-- **Headers de seguridad:** Helmet.js
-- **CORS configurado:** Dominios permitidos
 - **Anti-Formbricks:** Protección contra envíos accidentales
 
 ### Variables sensibles
@@ -261,9 +227,8 @@ El sistema incluye logs detallados:
 ## 📋 Scripts Disponibles
 
 ```bash
-npm start          # Producción
-npm run dev        # Desarrollo con nodemon
-npm test           # Placeholder para tests
+pnpm dev           # Desarrollo local (vercel dev)
+pnpm test          # Placeholder para tests
 ```
 
 ## 🤝 Contribución
@@ -294,14 +259,13 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 |-------|--------|----------|
 | 405 Method Not Allowed | Función serverless mal configurada | Verificar `api/send-email.js` |
 | EAUTH | App Password incorrecto | Regenerar App Password de Gmail |
-| CORS Error | Dominio no permitido | Agregar dominio a `ALLOWED_ORIGINS` |
 | 429 Rate Limited | Demasiados envíos | Esperar 15 min o reiniciar servidor |
 
 ### Logs útiles
 
 ```bash
-# Logs del servidor
-npm run dev
+# Logs en local
+pnpm dev
 
 # Logs de Vercel (producción)
 vercel logs
