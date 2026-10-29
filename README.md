@@ -17,7 +17,6 @@ Este es un portafolio web completo que incluye:
 ### 🎯 Características principales:
 
 - Secciones: Inicio, Sobre mí, Experiencia, Proyectos, Contacto
-- Galería de proyectos con filtros isotope
 - Integración con redes sociales
 - CV descargable
 - Formulario de contacto funcional
@@ -33,7 +32,6 @@ Este es un portafolio web completo que incluye:
 │   ├── css/
 │   │   └── style.css          # Estilos principales
 │   ├── js/
-│   │   ├── script.js          # Scripts principales
 │   │   ├── contact-form.js    # Formulario ES
 │   │   ├── contact-form-en.js # Formulario EN
 │   │   ├── anti-formbricks.js # Protección de formularios
@@ -117,8 +115,6 @@ EMAIL_TO=tucorreo@outlook.com
 - **Bootstrap Icons** - Iconografía  
 - **AOS 2.3.4** - Animaciones on scroll
 - **Swiper** - Carruseles y sliders
-- **Isotope** - Filtros y layouts
-- **jQuery 1.11.0** - Manipulación DOM (legacy)
 
 ## ⚡ Ejecución
 
