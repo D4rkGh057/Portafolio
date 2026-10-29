@@ -240,7 +240,7 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 ## 👤 Autor
 
 **Daniel Fuelpaz**
-- 🌐 Portfolio: [danielfuelpaz.com](https://danielfuelpaz.com)
+- 🌐 Portfolio: [portafolio-darkghost.vercel.app](https://portafolio-darkghost.vercel.app)
 - 📧 Email: danielfuelpaz@outlook.com
 - 💼 LinkedIn: [daniel-fuelpaz](https://linkedin.com/in/daniel-fuelpaz)
 - 🐙 GitHub: [@D4rkGh057](https://github.com/D4rkGh057)

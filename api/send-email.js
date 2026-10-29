@@ -179,7 +179,7 @@ export default async function handler(req, res) {
           <div style="text-align: center; margin-top: 20px; padding: 15px; background: #e3f2fd; border-radius: 8px;">
             <p style="margin: 0; color: #1565c0; font-size: 14px;">
               📧 Para responder, simplemente responde a este email<br>
-              🌐 Enviado desde: danielfuelpaz.com
+              🌐 Enviado desde: portafolio-darkghost.vercel.app
             </p>
           </div>
         </div>
