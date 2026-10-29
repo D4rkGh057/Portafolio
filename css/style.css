@@ -1568,24 +1568,40 @@ a:hover {
   grid-row: 1;
 }
 
-.exp-education {
+.exp-earlier {
   grid-column: 8 / 13;
   grid-row: 2;
 }
 
+.exp-education {
+  grid-column: 1 / 13;
+  grid-row: 3;
+}
+
+.exp-education .exp-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 2rem;
+}
+
+.exp-education .exp-content > * {
+  margin: 0;
+}
+
 .exp-skills-tech {
   grid-column: 1 / 7;
-  grid-row: 3;
+  grid-row: 4;
 }
 
 .exp-soft-skills {
   grid-column: 7 / 11;
-  grid-row: 3;
+  grid-row: 4;
 }
 
 .exp-stats {
   grid-column: 11 / 13;
-  grid-row: 3;
+  grid-row: 4;
 }
 
 /* Experience Bento Items */
@@ -1613,6 +1629,11 @@ a:hover {
 
 .exp-current .exp-tech img {
   filter: brightness(0) invert(1);
+}
+
+.exp-current .skill-tag {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
 }
 
 /* Experience Previous Position */
@@ -2075,25 +2096,30 @@ a:hover {
     grid-column: 1 / 4;
     grid-row: 2;
   }
-  
-  .exp-education {
+
+  .exp-earlier {
     grid-column: 4 / 7;
     grid-row: 2;
   }
-  
-  .exp-skills-tech {
+
+  .exp-education {
     grid-column: 1 / 7;
     grid-row: 3;
   }
-  
-  .exp-soft-skills {
-    grid-column: 1 / 4;
+
+  .exp-skills-tech {
+    grid-column: 1 / 7;
     grid-row: 4;
   }
-  
+
+  .exp-soft-skills {
+    grid-column: 1 / 4;
+    grid-row: 5;
+  }
+
   .exp-stats {
     grid-column: 4 / 7;
-    grid-row: 4;
+    grid-row: 5;
   }
 }
 
@@ -2106,6 +2132,7 @@ a:hover {
   
   .exp-current,
   .exp-previous,
+  .exp-earlier,
   .exp-education,
   .exp-skills-tech,
   .exp-soft-skills,
