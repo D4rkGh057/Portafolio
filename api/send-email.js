@@ -1,7 +1,38 @@
 import nodemailer from 'nodemailer';
 
-// Configuración de rate limiting simple (en memoria)
+// Configuración de rate limiting simple (en memoria, por instancia)
 const rateLimit = new Map();
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutos
+const RATE_LIMIT_MAX = 5;
+
+// x-forwarded-for puede traer varias IPs separadas por coma: usamos solo la primera
+const getClientIp = (req) => {
+  const forwarded = req.headers['x-forwarded-for'];
+  const first = Array.isArray(forwarded) ? forwarded[0] : forwarded?.split(',')[0];
+  return (first || req.socket?.remoteAddress || 'unknown').trim();
+};
+
+// Devuelve true si la IP superó el límite; en caso contrario registra el intento
+const isRateLimited = (ip) => {
+  const now = Date.now();
+
+  // Purga IPs inactivas para que el Map no crezca indefinidamente
+  for (const [key, times] of rateLimit) {
+    if (now - times[times.length - 1] >= RATE_LIMIT_WINDOW_MS) {
+      rateLimit.delete(key);
+    }
+  }
+
+  const attempts = (rateLimit.get(ip) || []).filter(time => now - time < RATE_LIMIT_WINDOW_MS);
+  if (attempts.length >= RATE_LIMIT_MAX) {
+    rateLimit.set(ip, attempts);
+    return true;
+  }
+
+  attempts.push(now);
+  rateLimit.set(ip, attempts);
+  return false;
+};
 
 export default async function handler(req, res) {
   console.log('🚀 Function started - Method:', req.method);
@@ -24,22 +55,11 @@ export default async function handler(req, res) {
 
   try {
     // Rate limiting básico por IP
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    const now = Date.now();
-    const windowMs = 15 * 60 * 1000; // 15 minutos
-    
-    if (rateLimit.has(ip)) {
-      const attempts = rateLimit.get(ip).filter(time => now - time < windowMs);
-      if (attempts.length >= 5) {
-        return res.status(429).json({
-          success: false,
-          error: 'Demasiados intentos. Intenta de nuevo en 15 minutos.'
-        });
-      }
-      attempts.push(now);
-      rateLimit.set(ip, attempts);
-    } else {
-      rateLimit.set(ip, [now]);
+    if (isRateLimited(getClientIp(req))) {
+      return res.status(429).json({
+        success: false,
+        error: 'Demasiados intentos. Intenta de nuevo en 15 minutos.'
+      });
     }
 
     const { nombre, email, mensaje } = req.body;
