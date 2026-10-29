@@ -42,7 +42,7 @@ const emailLimiter = rateLimit({
 const createTransporter = () => {
   // Configuración para Gmail
   if (process.env.EMAIL_USER?.includes('gmail.com')) {
-    return nodemailer.createTransporter({
+    return nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
@@ -53,7 +53,7 @@ const createTransporter = () => {
   
   // Configuración para Outlook/Hotmail
   if (process.env.EMAIL_USER?.includes('outlook.com') || process.env.EMAIL_USER?.includes('hotmail.com')) {
-    return nodemailer.createTransporter({
+    return nodemailer.createTransport({
       host: 'smtp-mail.outlook.com',
       port: 587,
       secure: false,
@@ -65,7 +65,7 @@ const createTransporter = () => {
   }
   
   // Configuración personalizada
-  return nodemailer.createTransporter({
+  return nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT || 587,
     secure: false,

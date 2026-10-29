@@ -119,7 +119,7 @@ export default async function handler(req, res) {
     }
     // Outlook
     else if (process.env.EMAIL_USER?.includes('outlook.com') || process.env.EMAIL_USER?.includes('hotmail.com')) {
-      transporter = nodemailer.createTransporter({
+      transporter = nodemailer.createTransport({
         host: 'smtp-mail.outlook.com',
         port: 587,
         secure: false,
@@ -131,7 +131,7 @@ export default async function handler(req, res) {
     }
     // Configuración personalizada
     else {
-      transporter = nodemailer.createTransporter({
+      transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
         port: process.env.EMAIL_PORT || 587,
         secure: false,
